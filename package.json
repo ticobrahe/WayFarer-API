@@ -1,0 +1,36 @@
+{
+  "name": "wayfarer-api",
+  "version": "1.0.0",
+  "description": "WayFarer is a public bus transportation booking server. You are required to develop the back-end API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ticobrahe/WayFarer-API.git"
+  },
+  "author": "Olabiyi Samuel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ticobrahe/WayFarer-API/issues"
+  },
+  "homepage": "https://github.com/ticobrahe/WayFarer-API#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.0",
+    "@babel/node": "^7.5.0",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.5.2",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-plugin-import": "^2.18.0",
+    "nodemon": "^1.19.1"
+  }
+}
