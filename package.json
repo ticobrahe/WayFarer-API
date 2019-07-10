@@ -4,7 +4,7 @@
   "description": "WayFarer is a public bus transportation booking server. You are required to develop the back-end API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha -r @babel/register",
     "start": "node index.js",
     "dev": "nodemon index.js --exec babel-node --",
     "migrate": "node ./services/db.js createAllTables"
@@ -35,9 +35,12 @@
     "@babel/node": "^7.5.0",
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.5.2",
+    "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "^2.18.0",
-    "nodemon": "^1.19.1"
+    "mocha": "^6.1.4",
+    "nodemon": "^1.19.1",
+    "nyc": "^14.1.1"
   }
 }
