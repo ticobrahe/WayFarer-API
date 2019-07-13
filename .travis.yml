@@ -13,7 +13,7 @@ service:
 
 env:
   global:
-    - TEST_DATABASE_URL=postgres://postgres:@127.0.0.1:5432/test_database
+    - TEST_DATABASE_URL=postgres://ticobrahe:wayfarer@127.0.0.1:5432/test_database
     - NODE_ENV=test
     - JWT_SECRET=prfdndn
 
