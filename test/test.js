@@ -5,7 +5,7 @@ import app from '../index';
 describe('/post /api/vi/auth/signup', () => {
   it('Should create a new user', (done) => {
     const user = {
-      email: 'tibfbf@fgjccjjjvvjzjgmkail.com',
+      email: 'tibfbf@fgjccjjjjjnjnjnjnjvvjzjgmkail.com',
       password: 'tobi',
       first_name: 'kemi',
       last_name: 'olabii',
