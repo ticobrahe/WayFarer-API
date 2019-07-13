@@ -32,10 +32,10 @@ exports.userSignUp = async (req, res) => {
     const token = helper.generateToken(result.rows[0].id);
     const resultData = result.rows[0];
     resultData.token = token;
-    return res.status(200).json({ status: 'success', data: resultData });
+    return res.status(200).send({ status: 'success', data: resultData });
   } catch (error) {
     if (error.routine === '_bt_check_unique') {
-      res.status(400).send({
+      return res.status(400).send({
         status: 'error',
         error: 'Email already exist',
       });
