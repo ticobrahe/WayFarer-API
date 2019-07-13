@@ -1,33 +1,36 @@
-import config from '../config';
+// import configJson from '../config';
 
 const { Pool } = require('pg');
 const dotenv = require('dotenv');
 
-dotenv.config();
-let connection;
-const env = process.env.NODE_ENV || 'development';
-if (env === 'development') {
-  connection = {
-    user: config.development.username,
-    database: config.development.database,
-    password: config.development.password,
-    host: config.development.host,
-  };
-} else {
-  connection = {
-    user: config.test.username,
-    database: config.test.database,
-    password: config.test.password,
-    host: config.test.host,
-  };
-}
+// onst env = process.env.NODE_ENV || 'development';
+// const config = configJson[env];
 
-// const connection = {
-//   user: config.development.username,
-//   database: config.development.database,
-//   password: config.development.password,
-//   host: config.development.host,
-// };
+dotenv.config();
+// let connection;
+// const env = process.env.NODE_ENV || 'development';
+// if (env === 'development') {
+//   connection = {
+//     user: config.development.username,
+//     database: config.development.database,
+//     password: config.development.password,
+//     host: config.development.host,
+//   };
+// } else {
+//   connection = {
+//     user: config.test.username,
+//     database: config.test.database,
+//     password: config.test.password,
+//     host: config.test.host,
+//   };
+// }
+
+const connection = {
+  user: process.env.DB_USERNAME,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+};
 
 const pool = new Pool(connection);
 
