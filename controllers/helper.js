@@ -11,6 +11,11 @@ exports.hashPassword = (password) => {
   return decrypt;
 };
 
+exports.comparePassword = (password, hashPassword) => {
+  const compare = bcrypt.compareSync(password, hashPassword);
+  return compare;
+};
+
 exports.generateToken = (id) => {
   const payload = { id };
   const options = { expiresIn: '2d' };

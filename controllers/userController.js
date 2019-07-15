@@ -44,6 +44,41 @@ exports.userSignUp = async (req, res) => {
   }
 };
 
-exports.go = (req, res) => {
-  res.status(200).send('Hi');
+exports.login = async (req, res) => {
+  if (!req.body.email || !req.body.password) {
+    return res.status(400).send({
+      status: 'error',
+      error: 'Some values are missing',
+    });
+  }
+  if (!helper.validateEmail(req.body.email)) {
+    return res.status(400).send({
+      status: 'error',
+      error: 'Invalid email address',
+    });
+  }
+  const client = await pool.connect();
+  const query = 'SELECT user_id, is_admin, password FROM users WHERE email = $1';
+  try {
+    const result = await client.query(query, [req.body.email]);
+    if (!result.rows[0]) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'The credentials you provided is incorrect',
+      });
+    }
+    if (!helper.comparePassword(req.body.password, result.rows[0].password)) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'The credentials you provided is incorrect',
+      });
+    }
+    const token = helper.generateToken(result.rows[0].user_id);
+    const resultData = result.rows[0];
+    delete resultData.password;
+    resultData.token = token;
+    return res.status(200).send({ status: 'success', data: resultData });
+  } catch (error) {
+    return res.status(400).send({ status: 'error', error });
+  }
 };
