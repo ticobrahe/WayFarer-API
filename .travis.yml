@@ -13,7 +13,6 @@ service:
 
 env:
   global:
-    - DATABASE_URL = postgres://hcnilwkw:38pk1SjT5eEZ9sKz7pqzPFnTRHJDsnUB@dumbo.db.elephantsql.com:5432/hcnilwkw
     - JWT_SECRET=prfdndn
 
 before_script:
