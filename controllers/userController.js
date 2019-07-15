@@ -4,7 +4,7 @@ import { pool } from '../services/db';
 
 exports.userSignUp = async (req, res) => {
   if (!req.body.email || !req.body.password || !req.body.first_name || !req.body.last_name) {
-    res.status(400).send({
+    return res.status(400).send({
       status: 'error',
       error: 'Some values are missing',
     });
