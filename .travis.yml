@@ -13,8 +13,7 @@ service:
 
 env:
   global:
-    - postgres://hcnilwkw:38pk1S...@dumbo.db.elephantsql.com:5432/hcnilwkw
-    - NODE_ENV=test
+    - DATABASE_URL = postgres://hcnilwkw:38pk1SjT5eEZ9sKz7pqzPFnTRHJDsnUB@dumbo.db.elephantsql.com:5432/hcnilwkw
     - JWT_SECRET=prfdndn
 
 before_script:
