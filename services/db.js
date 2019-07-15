@@ -34,7 +34,7 @@ pool.on('connect', () => {
 const createUserTable = () => {
   const query = `CREATE TABLE IF NOT EXISTS
     users(
-      id SERIAL PRIMARY KEY,
+      user_id SERIAL PRIMARY KEY,
       email VARCHAR(128) UNIQUE NOT NULL,
       password VARCHAR(128) NOT NULL,
       first_name VARCHAR(128) NOT NULL,
@@ -57,11 +57,14 @@ const createUserTable = () => {
 const createBusTable = () => {
   const query = `CREATE TABLE IF NOT EXISTS
     buses(
-      id SERIAL PRIMARY KEY,
-      number_plate VARCHAR(128) NOT NULL,
+      bus_id SERIAL PRIMARY KEY,
+      number_plate VARCHAR(128) UNIQUE NOT NULL,
       manufacturer VARCHAR(128) NOT NULL,
       model VARCHAR(128) NOT NULL,
-      capacity INT NOT NULL
+      year VARCHAR(128) NOT NULL,
+      capacity INT NOT NULL,
+      created_at TIMESTAMP,
+      updated_at TIMESTAMP
     )`;
   pool.query(query)
     .then((res) => {
@@ -77,12 +80,12 @@ const createBusTable = () => {
 const createTripTable = () => {
   const query = `CREATE TABLE IF NOT EXISTS
       trips(
-        id SERIAL PRIMARY KEY,
+        trip_id SERIAL PRIMARY KEY,
         bus_id INT NOT NULL,
         origin VARCHAR(128) NOT NULL,
         destination VARCHAR(128) NOT NULL,
         fare FLOAT NOT NULL,
-        status Boolean NOT NULL,
+        status BOOLEAN,
         trip_date TIMESTAMP
       )`;
   pool.query(query)
@@ -99,9 +102,10 @@ const createTripTable = () => {
 const createBookingTable = () => {
   const query = `CREATE TABLE IF NOT EXISTS
       bookings(
-        id SERIAL PRIMARY KEY,
+        booking_id SERIAL PRIMARY KEY,
         trip_id INT NOT NULL,
         user_id INT NOT NULL,
+        seat_number INT NOT NULL,
         created_on TIMESTAMP
       )`;
   pool.query(query)
