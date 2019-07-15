@@ -37,3 +37,32 @@ describe('/post /api/vi/auth/signup', () => {
       });
   });
 });
+
+describe('/post /api/vi/auth/signin', () => {
+  it('login a user', (done) => {
+    const user = {
+      email: 'ola@yahoo.com',
+      password: 'brand',
+    };
+    request(app)
+      .post('/api/v1/auth/signin')
+      .send(user)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        done();
+      });
+  });
+  it('not login user if not sign up', (done) => {
+    const user = {
+      email: 'ola@gmail.com',
+      password: 'brand',
+    };
+    request(app)
+      .post('/api/v1/auth/signin')
+      .send(user)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        done();
+      });
+  });
+});

@@ -16,7 +16,6 @@ env:
     - JWT_SECRET=prfdndn
 
 before_script:
-  - psql -c 'drop database if exists hcnilwkw;' -U postgres
   - psql -c 'create database hcnilwkw;' -U postgres
   - npm run migrate
 
