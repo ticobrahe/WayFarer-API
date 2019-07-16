@@ -7,7 +7,6 @@ import helper from '../controllers/helper';
 
 let admin;
 let user;
-let busTest;
 before(async () => {
   const client = await pool.connect();
   const queryAdmin = `INSERT INTO
@@ -30,24 +29,15 @@ before(async () => {
   const userToken = helper.generateToken(resultUser.rows[0].user_id);
   user = resultUser.rows[0];
   user.token = userToken;
-
-  const queryBus = `INSERT INTO
-        buses(number_plate, manufacturer, model, year, capacity, created_at)
-        VALUES($1, $2, $3, $4, $5, $6) returning *`;
-  const busData = ['AGSHHD', 'BMW', 'Xclass', '2002', 12, moment(new Date())];
-  const resultBus = await client.query(queryBus, busData);
-  busTest = resultBus.rows[0];
 });
 
-after(async () => {
-  const queryUser = 'delete from users';
-  const queryBus = 'delete from buses';
-  const queryTrip = 'delete from trips';
-  const client = await pool.connect();
-  await client.query(queryBus);
-  await client.query(queryUser);
-  //await client.query(queryTrip);
-});
+// after(async () => {
+//   const queryUser = 'delete from users';
+//   const queryBus = 'delete from buses';
+//   const client = await pool.connect();
+//   await client.query(queryBus);
+//   await client.query(queryUser);
+// });
 
 describe('/post /api/vi/auth/signup', () => {
   it('Should create a new user', (done) => {
