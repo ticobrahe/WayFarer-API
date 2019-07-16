@@ -12,6 +12,7 @@ router.post('/auth/signin', userController.login);
 router.post('/bus', authenticate.verifyToken, authenticate.isAdmin, tripController.registerBus);
 router.post('/trips', authenticate.verifyToken, authenticate.isAdmin, tripController.createTrip);
 router.get('/trips', authenticate.verifyToken, tripController.getAllTrip);
+router.put('/trips/:tripId', authenticate.verifyToken, authenticate.isAdmin, tripController.cancelTrip);
 
 router.post('/bookings', authenticate.verifyToken, bookController.bookTrip);
 router.get('/bookings', authenticate.verifyToken, bookController.getBookings);
