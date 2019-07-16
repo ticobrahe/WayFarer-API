@@ -71,3 +71,58 @@ exports.bookTrip = async (req, res) => {
     return res.status(400).send({ status: 'error', error });
   }
 };
+
+exports.getBookings = async (req, res) => {
+  const { is_admin, user_id } = req.user;
+  const client = await pool.connect();
+  if (is_admin === true) {
+    const adminQuery = `select b.booking_id,
+      u.user_id,
+      t.trip_id,
+      t.bus_id,
+      t.trip_date,
+      b.seat_number,
+      u.first_name,
+      u.last_name,
+      u.email from users u
+      inner join bookings b on b.user_id = u.user_id 
+      inner join trips t on b.trip_id = t.trip_id`;
+    try {
+      const result = await client.query(adminQuery);
+      if (result.rows < 1) {
+        return res.status(404).send({
+          status: 'error',
+          error: 'No Booking is found',
+        });
+      }
+      return res.status(200).send({ status: 'success', data: result.rows });
+    } catch (error) {
+      return res.status(400).send({ status: 'error', error });
+    }
+  } else {
+    const userQuery = `select b.booking_id,
+    u.user_id,
+    t.trip_id,
+    t.bus_id,
+    t.trip_date,
+    b.seat_number,
+    u.first_name,
+    u.last_name,
+    u.email from users u
+    inner join bookings b on b.user_id = u.user_id 
+    inner join trips t on b.trip_id = t.trip_id
+    where u.user_id = $1`;
+    try {
+      const result = await client.query(userQuery, [user_id]);
+      if (result.rows < 1) {
+        return res.status(404).send({
+          status: 'error',
+          error: 'No Booking is found',
+        });
+      }
+      return res.status(200).send({ status: 'success', data: result.rows });
+    } catch (error) {
+      return res.status(400).send({ status: 'error', error });
+    }
+  }
+};

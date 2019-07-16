@@ -14,5 +14,6 @@ router.post('/trips', authenticate.verifyToken, authenticate.isAdmin, tripContro
 router.get('/trips', authenticate.verifyToken, tripController.getAllTrip);
 
 router.post('/bookings', authenticate.verifyToken, bookController.bookTrip);
+router.get('/bookings', authenticate.verifyToken, bookController.getBookings);
 
 export default router;
