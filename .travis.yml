@@ -13,7 +13,7 @@ service:
 
 env:
   global:
-    - JWT_SECRET=prfdndn
+    - JWT_SECRET=jdkksdidjijijirbrg
 
 before_script:
   - psql -c 'create database hcnilwkw;' -U postgres

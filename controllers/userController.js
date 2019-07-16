@@ -29,7 +29,7 @@ exports.userSignUp = async (req, res) => {
   const client = await pool.connect();
   try {
     const result = await client.query(query, values);
-    const token = helper.generateToken(result.rows[0].id);
+    const token = helper.generateToken(result.rows[0].user_id);
     const resultData = result.rows[0];
     resultData.token = token;
     return res.status(200).send({ status: 'success', data: resultData });
