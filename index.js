@@ -12,20 +12,31 @@ app.use(bodyParser.urlencoded({ extended: false }));
 dotenv.config();
 
 const env = process.env.NODE_ENV || 'development';
+app.use('/api/v1', route);
 
 if (env === 'development') {
-  console.log(env);
-} else {
-  console.log('dev');
+  app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.json({
+      message: err.message,
+      error: err,
+    });
+  });
 }
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+    message: err.message,
+    error: {},
+  });
+});
 
 app.get('/', (req, res) => {
   const id = 2;
   const token = helper.generateToken(id);
   res.send(token);
 });
-
-app.use('/api/v1', route);
 
 app.listen(port, () => {
   console.log(port);
