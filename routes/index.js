@@ -10,5 +10,6 @@ router.post('/auth/signin', userController.login);
 
 router.post('/bus', authenticate.verifyToken, authenticate.isAdmin, tripController.registerBus);
 router.post('/trips', authenticate.verifyToken, authenticate.isAdmin, tripController.createTrip);
+router.get('/trips', authenticate.verifyToken, tripController.getAllTrip);
 
 export default router;

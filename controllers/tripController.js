@@ -62,7 +62,6 @@ exports.createTrip = async (req, res) => {
     }
     const queryCheck = 'SELECT bus_id, status from trips where bus_id = $1 AND status = $2';
     const resultCheckBus = await client.query(queryCheck, checkTrip);
-    console.log(resultCheckBus.rows[0]);
     // Check if the trip has been created for the selected bus
     if (resultCheckBus.rows[0]) {
       return res.status(400).send({
@@ -75,6 +74,23 @@ exports.createTrip = async (req, res) => {
           VALUES($1, $2, $3, $4, $5, $6) returning *`;
     const result = await client.query(query, data);
     return res.status(200).send({ status: 'success', data: result.rows[0] });
+  } catch (error) {
+    return res.status(400).send({ status: 'error', error });
+  }
+};
+
+exports.getAllTrip = async (req, res) => {
+  const query = 'SELECT trip_id, bus_id, origin, destination, status, trip_date, fare from trips';
+  const client = await pool.connect();
+  try {
+    const result = await client.query(query);
+    if (result.rows < 1) {
+      return res.status(400).send({
+        status: 'error',
+        error: 'No trip available',
+      });
+    }
+    return res.status(200).send({ status: 'success', data: result.rows });
   } catch (error) {
     return res.status(400).send({ status: 'error', error });
   }
