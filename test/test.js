@@ -104,64 +104,64 @@ describe('/post /api/v1/auth/signin', () => {
   });
 });
 
-describe('/post  /api/v1/bus', () => {
-  it('should register a bus if user is an admin', (done) => {
-    const bus = {
-      number_plate: 'ABWfdBW5',
-      manufacturer: 'Toyota',
-      model: 'matrix',
-      year: '2013',
-      capacity: 12,
-    };
-    request(app)
-      .post('/api/v1/bus')
-      .set('x-access-token', admin.token)
-      .send(bus)
-      .end((err, res) => {
-        expect(res.status).to.equal(200);
-        expect(res.body.data).to.include({
-          number_plate: bus.number_plate,
-          manufacturer: bus.manufacturer,
-          model: bus.model,
-          year: bus.year,
-          capacity: bus.capacity,
-        });
-        done();
-      });
-  });
-  it('Admin should not register a bus that is already registered ', (done) => {
-    const bus = {
-      number_plate: 'ABWfdBW5',
-      manufacturer: 'Toyota',
-      model: 'matrix',
-      year: '2013',
-      capacity: 12,
-    };
-    request(app)
-      .post('/api/v1/bus')
-      .set('x-access-token', admin.token)
-      .send(bus)
-      .end((err, res) => {
-        expect(res.status).to.equal(400);
-        expect(res.body.error).to.equal('Car with this number plate already exist');
-        done();
-      });
-  });
-  it('should not register a bus if user is not admin', (done) => {
-    const bus = {
-      number_plate: 'ABssWfdBW5',
-      manufacturer: 'Toyota',
-      model: 'matrix',
-      year: '2013',
-      capacity: 12,
-    };
-    request(app)
-      .post('/api/v1/bus')
-      .set('x-access-token', user.token)
-      .send(bus)
-      .end((err, res) => {
-        expect(res.status).to.equal(400);
-        done();
-      });
-  });
-});
+// describe('/post  /api/v1/bus', () => {
+//   it('should register a bus if user is an admin', (done) => {
+//     const bus = {
+//       number_plate: 'ABWfdBW5',
+//       manufacturer: 'Toyota',
+//       model: 'matrix',
+//       year: '2013',
+//       capacity: 12,
+//     };
+//     request(app)
+//       .post('/api/v1/bus')
+//       .set('x-access-token', admin.token)
+//       .send(bus)
+//       .end((err, res) => {
+//         expect(res.status).to.equal(200);
+//         expect(res.body.data).to.include({
+//           number_plate: bus.number_plate,
+//           manufacturer: bus.manufacturer,
+//           model: bus.model,
+//           year: bus.year,
+//           capacity: bus.capacity,
+//         });
+//         done();
+//       });
+//   });
+//   it('Admin should not register a bus that is already registered ', (done) => {
+//     const bus = {
+//       number_plate: 'ABWfdBW5',
+//       manufacturer: 'Toyota',
+//       model: 'matrix',
+//       year: '2013',
+//       capacity: 12,
+//     };
+//     request(app)
+//       .post('/api/v1/bus')
+//       .set('x-access-token', admin.token)
+//       .send(bus)
+//       .end((err, res) => {
+//         expect(res.status).to.equal(400);
+//         expect(res.body.error).to.equal('Car with this number plate already exist');
+//         done();
+//       });
+//   });
+//   it('should not register a bus if user is not admin', (done) => {
+//     const bus = {
+//       number_plate: 'ABssWfdBW5',
+//       manufacturer: 'Toyota',
+//       model: 'matrix',
+//       year: '2013',
+//       capacity: 12,
+//     };
+//     request(app)
+//       .post('/api/v1/bus')
+//       .set('x-access-token', user.token)
+//       .send(bus)
+//       .end((err, res) => {
+//         expect(res.status).to.equal(400);
+//         done();
+//       });
+//   });
+// });
