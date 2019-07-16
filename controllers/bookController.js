@@ -126,3 +126,21 @@ exports.getBookings = async (req, res) => {
     }
   }
 };
+
+exports.deleteBooking = async (req, res) => {
+  const query = `DELETE from bookings where booking_id = $1 and user_id = ${req.user.user_id}`;
+  const client = await pool.connect();
+  console.log(req.user.user_id);
+  try {
+    const result = await client.query(query, [req.params.bookingId]);
+    if (result.rowCount < 1) {
+      return res.status(404).send({
+        status: 'error',
+        error: 'Booking not found',
+      });
+    }
+    return res.status(200).send({ status: 'success', data: { message: 'Booking deleted succesfully' } });
+  } catch (error) {
+    return res.status(400).send({ status: 'error', error });
+  }
+};
