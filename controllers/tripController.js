@@ -95,3 +95,26 @@ exports.getAllTrip = async (req, res) => {
     return res.status(400).send({ status: 'error', error });
   }
 };
+
+exports.cancelTrip = async (req, res) => {
+  const findTripQuery = `SELECT trip_id 
+    from trips 
+    where trip_id = $1 and status = true`;
+  const updateTripQuery = `UPDATE trips 
+    SET status = false
+    where trip_id = $1`;
+  const client = await pool.connect();
+  try {
+    const findTripResult = await pool.query(findTripQuery, [req.params.tripId]);
+    if (!findTripResult.rows[0]) {
+      return res.status(404).send({
+        status: 'error',
+        error: 'Trip not found',
+      });
+    }
+    await client.query(updateTripQuery, [req.params.tripId]);
+    return res.status(200).send({ status: 'success', data: { message: 'Trip cancelled successfully' } });
+  } catch (error) {
+    return res.status(400).send({ status: 'error', error });
+  }
+};
