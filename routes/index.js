@@ -15,5 +15,6 @@ router.get('/trips', authenticate.verifyToken, tripController.getAllTrip);
 
 router.post('/bookings', authenticate.verifyToken, bookController.bookTrip);
 router.get('/bookings', authenticate.verifyToken, bookController.getBookings);
+router.delete('/bookings/:bookingId', authenticate.verifyToken, bookController.deleteBooking);
 
 export default router;
