@@ -51,15 +51,15 @@ exports.createTrip = async (req, res) => {
   const checkTrip = [req.body.bus_id, true];
   const client = await pool.connect();
   try {
-    const queryBus = ' SELECT number_plate from buses where bus_id = $1 ';
-    const resultBus = await client.query(queryBus, [req.body.bus_id]);
-    // check if bus has been registered
-    if (!resultBus.rows[0]) {
-      return res.status(404).send({
-        status: 'error',
-        error: 'Bus cannot be found',
-      });
-    }
+    // const queryBus = ' SELECT number_plate from buses where bus_id = $1 ';
+    // const resultBus = await client.query(queryBus, [req.body.bus_id]);
+    // // check if bus has been registered
+    // if (!resultBus.rows[0]) {
+    //   return res.status(404).send({
+    //     status: 'error',
+    //     error: 'Bus cannot be found',
+    //   });
+    // }
     const queryCheck = 'SELECT bus_id, status from trips where bus_id = $1 AND status = $2';
     const resultCheckBus = await client.query(queryCheck, checkTrip);
     // Check if the trip has been created for the selected bus
