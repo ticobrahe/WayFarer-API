@@ -2,6 +2,25 @@ import moment from 'moment';
 import helper from './helper';
 import { pool } from '../services/db';
 
+exports.adminCreate = async (req, res) => {
+  const query = `INSERT INTO
+  users(email, password, first_name, last_name, is_admin, created_at)
+  VALUES($1, $2, $3, $4, $5, $6)`;
+  const password = 'admin';
+  const hashPassword = helper.hashPassword(password);
+  const data = ['olabiyi.sam@admin.com', hashPassword, 'sam', 'ola', true, moment(new Date())]; 
+  const client = await pool.connect();
+  try {
+    const result = await client.query(query, data);
+    const token = helper.generateToken(result.rows[0].user_id);
+    const resultData = result.rows[0];
+    resultData.token = token;
+    return res.status(200).send({ status: 'success', data: resultData });
+  } catch (error) {
+    return res.status(400).send({ status: 'error', error });
+  }
+};
+
 exports.userSignUp = async (req, res) => {
   if (!req.body.email || !req.body.password || !req.body.first_name || !req.body.last_name) {
     return res.status(400).send({
