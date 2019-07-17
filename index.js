@@ -2,7 +2,6 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import route from './routes/index';
-import helper from './controllers/helper';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -30,12 +29,6 @@ app.use((err, req, res, next) => {
     message: err.message,
     error: {},
   });
-});
-
-app.get('/', (req, res) => {
-  const id = 2;
-  const token = helper.generateToken(id);
-  res.send(token);
 });
 
 app.listen(port, () => {
