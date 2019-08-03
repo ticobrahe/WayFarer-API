@@ -12,24 +12,10 @@ dotenv.config();
 
 const env = process.env.NODE_ENV || 'development';
 app.use('/api/v1', route);
-
-if (env === 'development') {
-  app.use((err, req, res, next) => {
-    res.status(err.status || 500);
-    res.json({
-      message: err.message,
-      error: err,
-    });
-  });
-}
-
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.json({
-    message: err.message,
-    error: {},
-  });
-});
+app.use((req, res) => res.status(404).json({
+  status: 'error',
+  error: `Route ${req.url} Not found`,
+}));
 
 app.listen(port, () => {
   console.log(port);

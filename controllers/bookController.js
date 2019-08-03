@@ -10,7 +10,7 @@ exports.bookTrip = async (req, res) => {
     const resultUser = await client.query(queryUser, [user_id, req.body.trip_id]);
     // Check if user has alrady booked a trip
     if (resultUser.rows[0]) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'Trip has alrealdy been booked by you',
       });
@@ -19,7 +19,7 @@ exports.bookTrip = async (req, res) => {
     const busId = tripResult.rows[0].bus_id;
     // Check if trip is avalaible
     if (tripResult.rows[0].status === false) {
-      return res.status(400).send({
+      return res.status(404).json({
         status: 'error',
         error: 'This trip is not available',
       });
@@ -43,7 +43,7 @@ exports.bookTrip = async (req, res) => {
     const queryBus = 'SELECT capacity from buses where bus_id = $1';
     const resultBus = await client.query(queryBus, [busId]);
     if (resultBus.rows[0].capacity === seatNumber) {
-      return res.status(400).send({
+      return res.status(400).json({
         status: 'error',
         error: 'Bus has been fully booked',
       });
@@ -66,9 +66,9 @@ exports.bookTrip = async (req, res) => {
     const queryData = [result.rows[0].user_id, result.rows[0].trip_id];
     const resultJoin = await client.query(queryJoin, queryData);
     console.log(resultJoin.rows[0]);
-    return res.status(200).send({ status: 'success', data: resultJoin.rows[0] });
+    return res.status(201).json({ status: 'success', data: resultJoin.rows[0] });
   } catch (error) {
-    return res.status(400).send({ status: 'error', error });
+    return res.status(400).json({ status: 'error', error });
   }
 };
 
@@ -90,14 +90,14 @@ exports.getBookings = async (req, res) => {
     try {
       const result = await client.query(adminQuery);
       if (result.rows < 1) {
-        return res.status(404).send({
+        return res.status(404).json({
           status: 'error',
-          error: 'No Booking is found',
+          error: 'Booking not found',
         });
       }
-      return res.status(200).send({ status: 'success', data: result.rows });
+      return res.status(200).json({ status: 'success', data: result.rows });
     } catch (error) {
-      return res.status(400).send({ status: 'error', error });
+      return res.status(400).json({ status: 'error', error });
     }
   } else {
     const userQuery = `select b.booking_id,
@@ -115,14 +115,14 @@ exports.getBookings = async (req, res) => {
     try {
       const result = await client.query(userQuery, [user_id]);
       if (result.rows < 1) {
-        return res.status(404).send({
+        return res.status(404).json({
           status: 'error',
-          error: 'No Booking is found',
+          error: 'Booking not found',
         });
       }
-      return res.status(200).send({ status: 'success', data: result.rows });
+      return res.status(200).json({ status: 'success', data: result.rows });
     } catch (error) {
-      return res.status(400).send({ status: 'error', error });
+      return res.status(400).json({ status: 'error', error });
     }
   }
 };
@@ -134,13 +134,13 @@ exports.deleteBooking = async (req, res) => {
   try {
     const result = await client.query(query, [req.params.bookingId]);
     if (result.rowCount < 1) {
-      return res.status(404).send({
+      return res.status(404).json({
         status: 'error',
         error: 'Booking not found',
       });
     }
-    return res.status(200).send({ status: 'success', data: { message: 'Booking deleted succesfully' } });
+    return res.status(200).json({ status: 'success', data: { message: 'Booking deleted succesfully' } });
   } catch (error) {
-    return res.status(400).send({ status: 'error', error });
+    return res.status(400).json({ status: 'error', error });
   }
 };
