@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { pool } from '../services/db';
+import { pool } from '../database/db';
 
 exports.verifyToken = async (req, res, next) => {
   const token = req.headers['x-access-token'];

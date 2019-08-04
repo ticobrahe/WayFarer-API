@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { pool } from '../services/db';
+import { pool } from '../database/db';
 
 exports.bookTrip = async (req, res) => {
   const { user_id } = req.user;

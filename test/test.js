@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import request from 'supertest';
 import moment from 'moment';
 import app from '../index';
-import { pool } from '../services/db';
+import { pool } from '../database/db';
 import helper from '../controllers/helper';
 
 let admin;

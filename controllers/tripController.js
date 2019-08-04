@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { pool } from '../services/db';
+import { pool } from '../database/db';
 
 exports.registerBus = async (req, res) => {
   if (!req.body.number_plate || !req.body.manufacturer || !req.body.model || !req.body.capacity) {

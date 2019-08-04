@@ -7,7 +7,8 @@
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" nyc --reporter=html --reporter=text  && mocha -r @babel/polyfill -r @babel/core -r @babel/register --timeout 30000  --recursive --exit",
     "start": "babel-node index.js",
     "dev": "nodemon index.js --exec babel-node --",
-    "migrate": "node ./services/db.js createAllTables",
+    "migrate": "node ./database/migrate createAllTables",
+    "migrate-refresh": "node ./database/migrate dropTripTable",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {

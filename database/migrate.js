@@ -31,6 +31,18 @@ pool.on('connect', () => {
   console.log('connected to Database');
 });
 
+const migrate = (queryText) => {
+  pool.query(queryText)
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((e) => {
+      console.log(e);
+      pool.end();
+    });
+};
+
 const createUserTable = () => {
   const query = `CREATE TABLE IF NOT EXISTS
     users(
@@ -43,15 +55,12 @@ const createUserTable = () => {
       created_at TIMESTAMP,
       updated_at TIMESTAMP
     )`;
-  pool.query(query)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-    });
+  migrate(query);
+};
+
+const dropUserTable = () => {
+  const query = 'DROP TABLE IF EXISTS users';
+  migrate(query);
 };
 
 const createBusTable = () => {
@@ -66,15 +75,12 @@ const createBusTable = () => {
       created_at TIMESTAMP,
       updated_at TIMESTAMP
     )`;
-  pool.query(query)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-    });
+  migrate(query);
+};
+
+const dropBusTable = () => {
+  const query = 'DROP TABLE IF EXISTS buses';
+  migrate(query);
 };
 
 const createTripTable = () => {
@@ -86,17 +92,15 @@ const createTripTable = () => {
         destination VARCHAR(128) NOT NULL,
         fare FLOAT NOT NULL,
         status BOOLEAN,
-        trip_date TIMESTAMP
+        trip_date TIMESTAMP,
+        FOREIGN KEY (bus_id) REFERENCES buses (bus_id) ON DELETE CASCADE
       )`;
-  pool.query(query)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-    });
+  migrate(query);
+};
+
+const dropTripTable = () => {
+  const query = 'DROP TABLE IF EXISTS trips';
+  migrate(query);
 };
 
 const createBookingTable = () => {
@@ -106,17 +110,16 @@ const createBookingTable = () => {
         trip_id INT NOT NULL,
         user_id INT NOT NULL,
         seat_number INT NOT NULL,
-        created_on TIMESTAMP
+        created_on TIMESTAMP,
+        FOREIGN KEY (trip_id) REFERENCES trips (trip_id) ON DELETE CASCADE,
+        FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
       )`;
-  pool.query(query)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-    });
+  migrate(query);
+};
+
+const dropBookingTable = () => {
+  const query = 'DROP TABLE IF EXISTS bookings';
+  migrate(query);
 };
 
 const createAllTables = () => {
@@ -126,6 +129,12 @@ const createAllTables = () => {
   createBookingTable();
 };
 
+const dropAllTables = () => {
+  dropBookingTable();
+  dropTripTable();
+  dropBusTable();
+  dropUserTable();
+};
 
 pool.on('remove', () => {
   console.log('client removed');
@@ -134,6 +143,6 @@ pool.on('remove', () => {
 
 module.exports = {
   createAllTables,
-  pool,
+  dropAllTables,
 };
 require('make-runnable');

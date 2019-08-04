@@ -1,6 +1,6 @@
 import moment from 'moment';
 import helper from './helper';
-import { pool } from '../services/db';
+import { pool } from '../database/db';
 
 exports.userSignUp = async (req, res) => {
   if (!req.body.email || !req.body.password || !req.body.first_name || !req.body.last_name) {
