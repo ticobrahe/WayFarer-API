@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { pool } from '../database/db';
+import pool from '../database/db';
 
 exports.verifyToken = async (req, res, next) => {
   const token = req.headers['x-access-token'];
@@ -9,11 +9,10 @@ exports.verifyToken = async (req, res, next) => {
       error: 'Access decenied. No Token provided',
     });
   }
-  const client = await pool.connect();
   const query = 'SELECT user_id, email,first_name,last_name,is_admin FROM users WHERE user_id = $1';
   try {
     const decoded = await jwt.verify(token, process.env.JWT_SECRET);
-    const result = await client.query(query, [decoded.id]);
+    const result = await pool.query(query, [decoded.id]);
     if (!result.rows[0]) {
       return res.status(401).json({
         status: 'error',

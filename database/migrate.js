@@ -91,9 +91,8 @@ const createTripTable = () => {
         origin VARCHAR(128) NOT NULL,
         destination VARCHAR(128) NOT NULL,
         fare FLOAT NOT NULL,
-        status BOOLEAN,
-        trip_date TIMESTAMP,
-        FOREIGN KEY (bus_id) REFERENCES buses (bus_id) ON DELETE CASCADE
+        status BOOLEAN NOT NULL,
+        trip_date TIMESTAMP
       )`;
   migrate(query);
 };
@@ -110,9 +109,7 @@ const createBookingTable = () => {
         trip_id INT NOT NULL,
         user_id INT NOT NULL,
         seat_number INT NOT NULL,
-        created_on TIMESTAMP,
-        FOREIGN KEY (trip_id) REFERENCES trips (trip_id) ON DELETE CASCADE,
-        FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
+        created_on TIMESTAMP
       )`;
   migrate(query);
 };

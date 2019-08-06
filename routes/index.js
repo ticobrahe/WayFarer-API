@@ -2,6 +2,7 @@ import express from 'express';
 import userController from '../controllers/userController';
 import tripController from '../controllers/tripController';
 import bookController from '../controllers/bookController';
+import busController from '../controllers/busController';
 import authenticate from '../middlewares/authenticate';
 
 const router = express.Router();
@@ -9,8 +10,10 @@ const router = express.Router();
 router.post('/auth/signup', userController.userSignUp);
 router.post('/auth/signin', userController.login);
 
+// bus endpoint
+router.post('/bus', authenticate.verifyToken, authenticate.isAdmin, busController.registerBus);
+
 // trip endpoints
-router.post('/bus', authenticate.verifyToken, authenticate.isAdmin, tripController.registerBus);
 router.post('/trips', authenticate.verifyToken, authenticate.isAdmin, tripController.createTrip);
 router.get('/trips', authenticate.verifyToken, tripController.getAllTrip);
 router.put('/trips/:tripId', authenticate.verifyToken, authenticate.isAdmin, tripController.cancelTrip);

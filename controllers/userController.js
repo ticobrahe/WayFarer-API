@@ -1,6 +1,6 @@
 import moment from 'moment';
 import helper from './helper';
-import { pool } from '../database/db';
+import pool from '../database/db';
 
 exports.userSignUp = async (req, res) => {
   if (!req.body.email || !req.body.password || !req.body.first_name || !req.body.last_name) {
@@ -26,9 +26,8 @@ exports.userSignUp = async (req, res) => {
   };
   const hashPassword = helper.hashPassword(req.body.password);
   const values = [data.email, hashPassword, data.first_name, data.last_name, false, data.c_at];
-  const client = await pool.connect();
   try {
-    const result = await client.query(query, values);
+    const result = await pool.query(query, values);
     const token = helper.generateToken(result.rows[0].user_id);
     const resultData = result.rows[0];
     resultData.token = token;
@@ -57,10 +56,9 @@ exports.login = async (req, res) => {
       error: 'Invalid email address',
     });
   }
-  const client = await pool.connect();
   const query = 'SELECT user_id, is_admin, password FROM users WHERE email = $1';
   try {
-    const result = await client.query(query, [req.body.email]);
+    const result = await pool.query(query, [req.body.email]);
     if (!result.rows[0]) {
       return res.status(401).json({
         status: 'error',
