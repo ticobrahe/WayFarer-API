@@ -15,10 +15,6 @@ env:
   global:
     - JWT_SECRET=jdkksdidjijijirbrg
 
-before_script:
-  - psql -c 'create database hcnilwkw;' -U postgres
-  - npm run migrate
-
 script:
   - npm rum test
 
