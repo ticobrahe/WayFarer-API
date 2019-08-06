@@ -31,6 +31,18 @@ pool.on('connect', () => {
   console.log('connected to Database');
 });
 
+const migrate = (queryText) => {
+  pool.query(queryText)
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    })
+    .catch((e) => {
+      console.log(e);
+      pool.end();
+    });
+};
+
 const createUserTable = () => {
   const query = `CREATE TABLE IF NOT EXISTS
     users(
@@ -43,15 +55,12 @@ const createUserTable = () => {
       created_at TIMESTAMP,
       updated_at TIMESTAMP
     )`;
-  pool.query(query)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-    });
+  migrate(query);
+};
+
+const dropUserTable = () => {
+  const query = 'DROP TABLE IF EXISTS users';
+  migrate(query);
 };
 
 const createBusTable = () => {
@@ -66,15 +75,12 @@ const createBusTable = () => {
       created_at TIMESTAMP,
       updated_at TIMESTAMP
     )`;
-  pool.query(query)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-    });
+  migrate(query);
+};
+
+const dropBusTable = () => {
+  const query = 'DROP TABLE IF EXISTS buses';
+  migrate(query);
 };
 
 const createTripTable = () => {
@@ -85,18 +91,15 @@ const createTripTable = () => {
         origin VARCHAR(128) NOT NULL,
         destination VARCHAR(128) NOT NULL,
         fare FLOAT NOT NULL,
-        status BOOLEAN,
+        status BOOLEAN NOT NULL,
         trip_date TIMESTAMP
       )`;
-  pool.query(query)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-    });
+  migrate(query);
+};
+
+const dropTripTable = () => {
+  const query = 'DROP TABLE IF EXISTS trips';
+  migrate(query);
 };
 
 const createBookingTable = () => {
@@ -108,15 +111,12 @@ const createBookingTable = () => {
         seat_number INT NOT NULL,
         created_on TIMESTAMP
       )`;
-  pool.query(query)
-    .then((res) => {
-      console.log(res);
-      pool.end();
-    })
-    .catch((err) => {
-      console.log(err);
-      pool.end();
-    });
+  migrate(query);
+};
+
+const dropBookingTable = () => {
+  const query = 'DROP TABLE IF EXISTS bookings';
+  migrate(query);
 };
 
 const createAllTables = () => {
@@ -126,6 +126,12 @@ const createAllTables = () => {
   createBookingTable();
 };
 
+const dropAllTables = () => {
+  dropBookingTable();
+  dropTripTable();
+  dropBusTable();
+  dropUserTable();
+};
 
 pool.on('remove', () => {
   console.log('client removed');
@@ -134,6 +140,6 @@ pool.on('remove', () => {
 
 module.exports = {
   createAllTables,
-  pool,
+  dropAllTables,
 };
 require('make-runnable');
