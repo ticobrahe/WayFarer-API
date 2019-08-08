@@ -14,7 +14,7 @@ exports.filterTrip = async (req, res) => {
     if (rows < 1) {
       return res.status(404).json({
         status: 'error',
-        error: 'Trip not found',
+        error: 'There are no search result for your query',
       });
     }
     return res.status(200).json({ status: 'success', data: rows });
