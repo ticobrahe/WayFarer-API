@@ -11,6 +11,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 dotenv.config();
 
 const env = process.env.NODE_ENV || 'development';
+app.get('/', (req, res) => res.json({
+  status: 'success',
+  message: 'Welcome to wayfarer API. Visit this link for the documentation: https://documenter.getpostman.com/view/8323373/SVYrsyCR'
+}));
 app.use('/api/v1', route);
 app.use((req, res) => res.status(404).json({
   status: 'error',
