@@ -3,6 +3,7 @@ import userController from '../controllers/userController';
 import tripController from '../controllers/tripController';
 import bookController from '../controllers/bookController';
 import busController from '../controllers/busController';
+import searchController from '../controllers/searchController';
 import authenticate from '../middlewares/authenticate';
 
 const router = express.Router();
@@ -22,5 +23,9 @@ router.put('/trips/:tripId', authenticate.verifyToken, authenticate.isAdmin, tri
 router.post('/bookings', authenticate.verifyToken, bookController.bookTrip);
 router.get('/bookings', authenticate.verifyToken, bookController.getBookings);
 router.delete('/bookings/:bookingId', authenticate.verifyToken, bookController.deleteBooking);
+
+// Search endpoint
+router.get('/search', authenticate.verifyToken, searchController.filterTrip);
+
 
 export default router;

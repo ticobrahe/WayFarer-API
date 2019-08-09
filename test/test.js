@@ -399,6 +399,35 @@ describe('Booking endpoints test', () => {
   });
 });
 
+describe('/Get  /api/v1/search', () => {
+  it('should filter trips', (done) => {
+    const search = {
+      origin: tripTest.origin,
+    };
+    request(app)
+      .get('/api/v1/search')
+      .send(search)
+      .set('x-access-token', user.token)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        done();
+      });
+  });
+  it('should return 404 if no trip is found', (done) => {
+    const search = {
+      origin: 'Ketu',
+    };
+    request(app)
+      .patch('/api/v1/search')
+      .send(search)
+      .set('x-access-token', user.token)
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        done();
+      });
+  });
+});
+
 describe('/Patch  /api/v1/trips', () => {
   it('should cancel a trip', (done) => {
     request(app)
@@ -420,3 +449,4 @@ describe('/Patch  /api/v1/trips', () => {
       });
   });
 });
+
